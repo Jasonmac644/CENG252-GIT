@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1649732692 source:/home/pi/ceng153/labs/vdl/cdl.cpp
+
+1649733417 source:/home/pi/CENG252/vdl/vdl.cpp
+	<cstdio>
+	<unistd.h>
+	"vdl.h"
+
+1649733373 /home/pi/CENG252/vdl/vdl.h
+
