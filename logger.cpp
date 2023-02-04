@@ -52,7 +52,11 @@ uint64_t DlGetSerial(void)
      }
 	return serial;
 }
-
+/** @brief DLInitialization Function*
+@author Jason Macdonald*
+@date 19JAN2023*
+@param void*
+@return int64*/
 int DlInitialization(void){
     fprintf(stdout,"Jason Macdonald's CENG252 Vehicle Data Logger\n");
     return 1;
@@ -67,7 +71,8 @@ int DlInitialization(void){
 reading_s DlGetLoggerReadings (){
     reading_s creads;
     time(&creads.rtime);
-    if(SENSEHAT == 1){
+    #if SENSEHAT
+
         creads.temperature = sh.GetTemperature();
         creads.humidity = sh.GetHumidity();
         creads.pressure = sh.GetPressure();
@@ -75,7 +80,7 @@ reading_s DlGetLoggerReadings (){
         sh.GetMagnetism(creads.xm,creads.ym,creads.zm);
         sh.GetOrientation(creads.pitch,creads.roll,creads.yaw);
         usleep(IMUDELAY);
-    }else if(SENSEHAT == 0){
+    #else
         creads.altitude = DALT;
         creads.heading = DHEADING;
         creads.humidity = DHUMID;
@@ -93,10 +98,9 @@ reading_s DlGetLoggerReadings (){
         creads.ym = DYM;
         creads.za = DZA;
         creads.zm = DZM;
-    }
+        #endif // SENSEHAT
 
-
-    return creads;
+        return creads;
 }
 /** @brief Display readings *
 @author Jason Macdonald*
@@ -120,4 +124,50 @@ int DlSaveLoggerData(reading_s creads){
     fprintf(stdout,"\nSaving Data Logger\n");
     return 1;
 
+}
+/** @brief Display logo function *
+@author Jason Macdonald*
+@date 03FEB2023*
+@param void*
+@return void*/
+
+void DlDisplayLogo(void){
+    uint16_t logo[8][8] = {	HB,HB,HB,HB,HB,HB,HB,HB,
+			HB,HB,HW,HB,HB,HW,HB,HY,
+			HB,HB,HW,HB,HB,HW,HY,HY,
+			HB,HB,HW,HB,HB,HW,HY,HY,
+			HB,HB,HW,HW,HW,HW,HY,HY,
+			HB,HB,HW,HY,HY,HW,HY,HY,
+			HB,HY,HW,HY,HY,HW,HY,HY,
+			HY,HY,HY,HY,HY,HY,HY,HY,
+            };
+    sh.WipeScreen();
+    sh.ViewPattern(logo);
+
+}
+/** @brief Dl Update function *
+@author Jason Macdonald*
+@date 03FEB2023*
+@param void*
+@return void*/
+void DlUpdateLevel(float xa, float ya){
+    int x,y;
+    sh.WipeScreen();
+    y = (int) (xa * -30.0 +4);
+    x = (int) (ya * -30.0 +4);
+    if(x<0){
+        x = 0;
+    }else if(x > 6){
+        x = 6;
+    }
+    if(y < 0){
+        y = 0;
+    }else if(y > 6){
+        y = 6;
+    }
+
+    sh.LightPixel(x,y,HY);
+    sh.LightPixel(x+1,y,HY);
+    sh.LightPixel(x,y+1,HY);
+    sh.LightPixel(x+1,y+1,HY);
 }

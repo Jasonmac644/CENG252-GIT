@@ -14,14 +14,25 @@
 @param void*
 @return int program status*/
 int main(void){
+    //function variables
+    int tc = 0;
+
     printf("Data Logger Initiliazation\n\n");
     reading_s current = {0};
     DlInitialization();
+    DlDisplayLogo();
+    sleep(3);
 
     while(1){
         current = DlGetLoggerReadings();
-        DlDisplayLoggerReadings(current);
-        DlSaveLoggerData(current);
-        sleep(5);
+        DlUpdateLevel(current.xa, current.ya);
+        if(tc == LOGCOUNT){
+            DlDisplayLoggerReadings(current);
+            DlSaveLoggerData(current);
+            tc = 0;
+        }else{
+            usleep(SLEEPTIME);
+            tc++;
         }
+    }
 }

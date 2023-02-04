@@ -28,6 +28,9 @@
 #define SEARCHSTR "serial\t\t:"
 #define SYSINFOBUFSZ 512
 #define SENSEHAT 1
+#define HW 0xFFFF
+#define HB 0x00E7
+#define HY 0xC4A0
 //Structure
 typedef struct readings
 {
@@ -59,7 +62,8 @@ uint64_t DlGetSerial(void);
 reading_s	DlGetLoggerReadings(void);
 void DlDisplayLoggerReadings(reading_s lreads);
 int DlSaveLoggerData(reading_s creads);
-
+void DlDisplayLogo(void);
+void DlUpdateLevel(float xa, float ya);
 // -------------------------------------------------------------------------
 // Internal functions
 // -------------------------------------------------------------------------

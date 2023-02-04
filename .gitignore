@@ -1,0 +1,6 @@
+*.o
+*.txt
+*.dat
+vdl
+vdl.cbp
+vdl.layout
